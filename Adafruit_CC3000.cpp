@@ -32,7 +32,6 @@
 #include "utility/socket.h"
 #include "utility/wlan.h"
 #include "utility/debug.h"
-#include "utility/sntp.h"
 
 uint8_t g_csPin, g_irqPin, g_vbatPin, g_IRQnum, g_SPIspeed;
 
@@ -1196,7 +1195,7 @@ uint16_t Adafruit_CC3000::ping(uint32_t ip, uint8_t attempts, uint16_t timeout, 
 #endif
 
 #ifndef CC3000_TINY_DRIVER
-uint16_t Adafruit_CC3000::getHostByName(char *hostname, uint32_t *ip) {
+uint16_t Adafruit_CC3000::getHostByName(const char *hostname, uint32_t *ip) {
   if (!_initialised) return 0;
   if (!cc3000Bitset.test(CC3000BitSet::IsConnected)) return 0;
   if (!cc3000Bitset.test(CC3000BitSet::HasDHCP)) return 0;
@@ -1525,7 +1524,7 @@ size_t Adafruit_CC3000_Client::fastrprint(const __FlashStringHelper *ifsh)
   char _tx_buf[TXBUFFERSIZE];
   uint8_t idx = 0;
 
-  const char PROGMEM *p = (const char PROGMEM *)ifsh;
+  const char *p = (const char PROGMEM *)ifsh;
   size_t n = 0;
   while (1) {
     unsigned char c = pgm_read_byte(p++);
